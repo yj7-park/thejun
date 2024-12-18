@@ -12,7 +12,9 @@ class OptimizedFoodAnalyzer:
         self.performance_monitor = PerformanceMonitor()
         self.labels = SETTINGS['food_categories']
     
-    @st.cache_resource
+    @st.cache_resource(hash_funcs={
+        'keras.engine.functional.Functional': lambda _: None
+    })  # TensorFlow 모델에 대한 해시 함수 추가
     def load_model():
         with st.spinner("모델 로딩 중..."):
             model = tf.keras.applications.MobileNetV2(
